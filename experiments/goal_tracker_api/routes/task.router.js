@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { createTask } from "../controllers/task.controller.js";
+import { createTask, getAllTasks } from "../controllers/task.controller.js";
+import authMiddleWare from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/", createTask);
+router.post("/", authMiddleWare, createTask);
+router.get("/", getAllTasks);
 
 export default router;

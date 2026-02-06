@@ -1,12 +1,19 @@
 import User from "../models/user.model.js";
+import ApiError from "../utils/apiError.js";
 
-const createUserService = async (username, email) => {
-  const Existing = await User.findOne({ email });
-  if (Existing) {
-    throw new Error("user already exists");
+const getAllUsersService = async () => {
+  const users = await User.find();
+  if (!users) {
+    throw new ApiError(404, "No users found");
   }
-  const user = await User.create({ username, email });
-  return user;
+  return users;
 };
 
-export { createUserService };
+const getUserByIdService = async (id) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+  return user;
+};
+export { getAllUsersService, getUserByIdService };

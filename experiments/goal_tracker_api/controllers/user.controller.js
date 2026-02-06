@@ -1,22 +1,22 @@
 import asyncHandler from "../utils/asyncHanlder.js";
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
+import {
+  getAllUsersService,
+  getUserByIdService,
+} from "../services/user.service.js";
 
-import { createUserService } from "../services/user.service.js";
-
-const createUser = asyncHandler(async (req, res) => {
-  const { username, email } = req.body;
-  if (!username) {
-    return res.status(500).json(new ApiError(500, "username missing"));
-  }
-  if (!email) {
-    return res.status(500).json(new ApiError(500, "email missing"));
-  }
-
-  const user = await createUserService(username, email);
-  return res
-    .status(201)
-    .json(new ApiResponse(201, "user created successfully", user));
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await getAllUsersService();
+  return res.status(200).json(new ApiResponse(200, "users found", users));
 });
 
-export { createUser };
+const getUserById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    throw new ApiError(400, "Id is required");
+  }
+  const user = await getUserByIdService(req.params.id);
+  return res.status(200).json(new ApiResponse(200, "user found", user));
+});
+export { getAllUsers, getUserById };

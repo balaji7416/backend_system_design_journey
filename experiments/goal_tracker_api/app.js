@@ -5,6 +5,7 @@ import express from "express";
 //routers
 import userRouter from "./routes/user.router.js";
 import taskRouter from "./routes/task.router.js";
+import authRouter from "./routes/auth.router.js";
 
 //middlewares
 import globalErrorMiddleware from "./middlewares/error.middleware.js";
@@ -24,6 +25,7 @@ app.use(express.json());
 //assign requests to router
 app.use("/api/users", userRouter);
 app.use("/api/tasks", taskRouter);
+app.use("/api/auth", authRouter);
 
 app.use((req, res, next) => {
   throw new ApiError(500, "route not found");
